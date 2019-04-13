@@ -58,7 +58,7 @@ int main()
 	
 	initialize_map(hidden_word_length); 
 	quicksort(map, 0, 25);
-	char currentWord[hidden_word_length];
+	char currentWord[hidden_word_length+1];
 	bool is_new_word = 0;
 	current_word(currentWord, is_new_word, hidden_word_length, hidden_word);
 	/*
@@ -237,6 +237,7 @@ void current_word(char current_word[], bool is_new_word, int hidden_word_length,
 	{
 		current_word[i] = '_';
 	}
+	current_word[hidden_word_length] = '\0';
 	char guessed_letter;
 	int hit = 0, miss = 0, x = 0;
 	int is_guessed_letter_in_hidden_word;
