@@ -17,7 +17,10 @@ typedef struct letter_freqency
 int frequence_all[24][26]={0};
 letter_freqency *map; //map pointer, it's an array of 26 letters and their freqency
 int index_map; //to keep track of what letters we checked from the map array
-
+int incorrectGuess=0;
+int *accuracy;
+int total_words=0;
+char *hidden;
 /*Functions Prototypes*/
 void create_file(int length_of_word,char *word_file);
 void init_hangman_player(char* word_file);
@@ -309,10 +312,34 @@ void get_random_hidden_word(FILE *hidden_word_file, char file_name[], char hidde
 	{
 		fscanf(hidden_word_file, "%s", hidden_word); //read a word from each line, last word will be the hidden word
 		i++;
-	}	
+	}
+	strcpy(hidden, hidden_word);
 	//checks://printf("size_of_hidden_word_file = %d\n", size_of_hidden_word_file); //test the length of the hidden words list
 	//checks://printf("random_number = %d\n", random_number); //test random number
 	fclose(hidden_word_file); //close file
 
+
+}
+
+// feedback on the guessed letter
+// is_correct_guess: true if the guessed letter is one of the letters in the hidden word
+// current_word: partially filled or blank word
+//   
+// Case       is_correct_guess    current_word   
+// a.         true                partial word with the guessed letter
+//                                   or the whole word if the guessed letter was the
+//                                   last letter needed
+// b.         false               partial word without the guessed letter
+void feedback_hangman_player(bool is_correct_guess, char* current_word)
+{
+	if(is_correct_guess == 1){
+		if(strcmp(current_word, hidden)==0){
+			accuracy= (int *)malloc((total_words+1)*sizeof(int));
+			accuracy[total_words] = (1-(incorrectGuess/6))*100;
+			total_words++;
+		}
+	}else{
+		incorrectGuess++;
+	}
 
 }
